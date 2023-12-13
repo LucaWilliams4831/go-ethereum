@@ -163,7 +163,8 @@ func (args *TransactionArgs) setFeeDefaults(ctx context.Context, b Backend) erro
 		if err != nil {
 			return err
 		}
-		args.GasPrice = (*hexutil.Big)(new BigInt(0))
+		args.GasPrice = new(hexutil.Big)
+		args.GasPrice.SetInt64(0)
 	}
 	return nil
 }
@@ -250,7 +251,8 @@ func (args *TransactionArgs) ToMessage(globalGasCap uint64, baseFee *big.Int) (t
 			// Backfill the legacy gasPrice for EVM execution, unless we're all zeroes
 			gasPrice = new(big.Int)
 			if gasFeeCap.BitLen() > 0 || gasTipCap.BitLen() > 0 {
-				gasPrice = new BigInt(0)
+				gasPrice = new(hexutil.Big)
+				gasPrice.SetInt64(0)
 			}
 		}
 	}
