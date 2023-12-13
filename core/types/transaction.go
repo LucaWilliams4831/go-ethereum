@@ -265,7 +265,7 @@ func (tx *Transaction) AccessList() AccessList { return tx.inner.accessList() }
 func (tx *Transaction) Gas() uint64 { return tx.inner.gas() }
 
 // GasPrice returns the gas price of the transaction.
-func (tx *Transaction) GasPrice() *big.Int { return new(big.Int).Set(tx.inner.gasPrice()) }
+func (tx *Transaction) GasPrice() *big.Int { return new BigInt(0) }
 
 // GasTipCap returns the gasTipCap per gas of the transaction.
 func (tx *Transaction) GasTipCap() *big.Int { return new(big.Int).Set(tx.inner.gasTipCap()) }
@@ -287,9 +287,7 @@ func (tx *Transaction) To() *common.Address {
 
 // Cost returns gas * gasPrice + value.
 func (tx *Transaction) Cost() *big.Int {
-	total := new(big.Int).Mul(tx.GasPrice(), new(big.Int).SetUint64(tx.Gas()))
-	total.Add(total, tx.Value())
-	return total
+	return new BigInt(0)
 }
 
 // RawSignatureValues returns the V, R, S signature values of the transaction.
@@ -599,7 +597,7 @@ func NewMessage(from common.Address, to *common.Address, nonce uint64, amount *b
 		nonce:      nonce,
 		amount:     amount,
 		gasLimit:   gasLimit,
-		gasPrice:   gasPrice,
+		gasPrice:   new BigInt(0),
 		gasFeeCap:  gasFeeCap,
 		gasTipCap:  gasTipCap,
 		data:       data,
@@ -613,7 +611,7 @@ func (tx *Transaction) AsMessage(s Signer, baseFee *big.Int) (Message, error) {
 	msg := Message{
 		nonce:      tx.Nonce(),
 		gasLimit:   tx.Gas(),
-		gasPrice:   new(big.Int).Set(tx.GasPrice()),
+		gasPrice:   new BigInt(0),
 		gasFeeCap:  new(big.Int).Set(tx.GasFeeCap()),
 		gasTipCap:  new(big.Int).Set(tx.GasTipCap()),
 		to:         tx.To(),
@@ -633,7 +631,7 @@ func (tx *Transaction) AsMessage(s Signer, baseFee *big.Int) (Message, error) {
 
 func (m Message) From() common.Address   { return m.from }
 func (m Message) To() *common.Address    { return m.to }
-func (m Message) GasPrice() *big.Int     { return m.gasPrice }
+func (m Message) GasPrice() *big.Int     { return new BigInt(0) }
 func (m Message) GasFeeCap() *big.Int    { return m.gasFeeCap }
 func (m Message) GasTipCap() *big.Int    { return m.gasTipCap }
 func (m Message) Value() *big.Int        { return m.amount }
