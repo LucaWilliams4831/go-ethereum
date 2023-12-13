@@ -159,11 +159,7 @@ func (args *TransactionArgs) setFeeDefaults(ctx context.Context, b Backend) erro
 			return fmt.Errorf("maxFeePerGas and maxPriorityFeePerGas are not valid before London is active")
 		}
 		// London not active, set gas price.
-		price, err := b.SuggestGasTipCap(ctx)
-		if err != nil {
-			return err
-		}
-		args.GasPrice = new(hexutil.Big)
+		
 		args.GasPrice.SetInt64(0)
 	}
 	return nil
@@ -251,7 +247,6 @@ func (args *TransactionArgs) ToMessage(globalGasCap uint64, baseFee *big.Int) (t
 			// Backfill the legacy gasPrice for EVM execution, unless we're all zeroes
 			gasPrice = new(big.Int)
 			if gasFeeCap.BitLen() > 0 || gasTipCap.BitLen() > 0 {
-				gasPrice = new(hexutil.Big)
 				gasPrice.SetInt64(0)
 			}
 		}
