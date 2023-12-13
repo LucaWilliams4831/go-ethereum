@@ -160,7 +160,7 @@ func (args *TransactionArgs) setFeeDefaults(ctx context.Context, b Backend) erro
 		}
 		// London not active, set gas price.
 		
-		args.GasPrice.SetInt64(0)
+		args.GasPrice.ToInt().SetInt64(0)
 	}
 	return nil
 }
