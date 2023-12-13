@@ -290,7 +290,7 @@ func (tx *Transaction) GetValue() *BigInt    { return &BigInt{tx.tx.Value()} }
 func (tx *Transaction) GetNonce() int64      { return int64(tx.tx.Nonce()) }
 
 func (tx *Transaction) GetHash() *Hash   { return &Hash{tx.tx.Hash()} }
-func (tx *Transaction) GetCost() *BigInt { return &BigInt{tx.tx.Cost()} }
+func (tx *Transaction) GetCost() *BigInt {  return &BigInt{new(big.Int).SetInt64(0)} }
 
 func (tx *Transaction) GetTo() *Address {
 	if to := tx.tx.To(); to != nil {
